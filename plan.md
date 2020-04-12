@@ -1,10 +1,14 @@
 # Dev Plan for making all-for-you
 
-### Description
+[TOC]
+
+
+
+## Description
 
 All-for-you is a little program meant to output a personalised polynomial for all your personal polynomial needs!
 
-### Process
+## Process
 
 Files: From most important to least important
 
@@ -16,7 +20,25 @@ main[x] - input set of numbers and produces unsimplified personal polynomial
 
 simplify[x] - input expression and simplifies it (this is optional)
 
-### Polynomial code
+## Formatting
+
+### General symbols 
+
+$+$ - Addition
+
+$-$ - Subtraction
+
+$*$ - Multiplication
+
+`frac {n} {d}` - Division (inspiration from LaTeX)
+
+[more to be added later]
+
+### Seperating terms
+
+`25x^2+25x+150`$\rightarrow$``
+
+## Polynomial code
 
 lets say you want a personal polynomail for Y-O-U
 
@@ -48,7 +70,9 @@ solve for n, $(2-1)(2-3)=-1$, so to get it to equal to 1, divide by -1 to get $\
 
 Do same for U ($\frac{21(x-1)(x-2)}{2}$) and add them all together to get $\frac{25(x-2)(x-3)}{2}+\frac{15(x-1)(x-3)}{-1}+\frac{21(x-1)(x-2)}{2}$
 
-### Simplification
+## Simplification of terms and expressions
+
+#### Simplification of brackets
 
 There will need to be alot of bracket multiplying in this, so let's start with that:
 
@@ -58,7 +82,50 @@ $25(x-2)\rightarrow(25\times x)-(25\times-2)\rightarrow25x-50$
 
 
 
-How to detect the individual parts, though?
+That's multiplying a single term with a bracket, but what about quadratics?
+
+$(25x-50)(x-3)\rightarrow$ 
+
+$25x\times x+25x\times-3+-50\times x+-50\times-3\rightarrow$
+
+ $25x^2+75x-50x+150\rightarrow$
+
+ $25x^2+25x+150$
+
+#### Simplification of fractions
+
+Example: $\frac{25x^2+25x+150}{5}$
+
+
+
+
+
+## Detection of individual parts (terms?)
+
+### Seperating terms
+
+Example: $25x^2+25x-150$
+
+Formatted as `25x^2+25x-150`
+
+
+
+Check for one of these characters: + - * /  and any non-number character (^ is not counted as it is not a term separator). Count how many of them there are and store it as variable `n`
+
+```java
+int n = 5 //how many characters + - * / there are
+int expression [][] = new int [n+1][4]
+```
+
+
+
+The aforementioned input becomes `25+`
+
+
+
+### Expressions with brackets
+
+#### Non-quadratic expressions
 
 Look for the first character, it's a number, so read until the opening bracket
 
@@ -76,25 +143,9 @@ but cut off the first two characters so that only `(x-2)` is left
 
 There you have it, the two parts. `25` and `(x-2)`
 
-**ok, but how about actually multiplying them?**
 
 
-
-That's multiplying a single term with a bracket, but what about quadratics?
-
-$(25x-50)(x-3)\rightarrow$ 
-
-$25x\times x+25x\times-3+-50\times x+-50\times-3\rightarrow$
-
- $25x^2+75x-50x+150\rightarrow$
-
- $25x^2+25x+150$
-
-Whew, that was long.
-
-But, how to dissect it?
-
-
+#### Quadratic expressions
 
 Look at the first character, `(`, it's a bracket so read until a closing bracket
 
