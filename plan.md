@@ -20,6 +20,22 @@ main[x] - input set of numbers and produces unsimplified personal polynomial
 
 simplify[x] - input expression and simplifies it (this is optional)
 
+## Input
+
+Simple, input the entire thing as a String
+
+
+
+```java
+import java.util.Scanner; // import java.util.*
+  
+
+```
+
+
+
+
+
 ## Formatting
 
 ### General symbols 
@@ -36,7 +52,11 @@ $*$ - Multiplication
 
 ### Seperating terms
 
-`25x^2+25x+150`$\rightarrow$``
+`(25x^2+25x)+150`$\rightarrow$``
+
+look for pairs of these, first: (,). There  is one pair so detect character "("
+
+
 
 ## Polynomial code
 
@@ -108,20 +128,56 @@ Example: $25x^2+25x-150$
 
 Formatted as `25x^2+25x-150`
 
+`25+75+50`
 
 
-Check for one of these characters: + - * /  and any non-number character (^ is not counted as it is not a term separator). Count how many of them there are and store it as variable `n`
+
+Check for one of these characters: + - * /  and any instances of `x` (^ is not counted as it is not a term separator). Count how many of them there are and store it as variable `n`
 
 ```java
-int n = 5 //how many characters + - * / there are
-int expression [][] = new int [n+1][4]
+//Scanner and reading have been routed to variable 'input'
+//n is how many characters + - * / there are
+pattern="[^xX+\-*/]"; //generates pattern excluding operations (except ^) and x 
+String alt = input; //alt for String input
+int n = alt.replaceAll(pattern, "").length(); //removes all numbers and operation ^ and find length
+// n = alt.length();
+int expression1 [][] = new int [2n+1][4]; // n being how many 'seperator characters' there are. n+1 is how many terms there are. 
+int lengthOfInput=input.length();
 ```
 
 
 
-The aforementioned input becomes `25+`
+Let's call putting the String into an array 'harvesting'
+
+Starting from the first character, look until there is a non-number, non-exponent character
+
+```java
+int startOfElement = 0; //character position start for element
+for (i=0;i<=input.length();i++){
+  //expression1[0][]
+	if (input.charAt(i).matches("x+\-*/()") == true){
+    startOfElement = i;
+  }
+}
+```
 
 
+
+Ideal Output:
+
+| Array `expression1[][]` | `[?][0]` | `[?][1]` | `[?][2]` | `[?][3]` |
+| ----------------------- | -------- | -------- | -------- | -------- |
+| `[0][?]` -1st term      | +25      | x        | ^        | 2        |
+| `[2][?]` - 2nd term     | +25      | x        |          |          |
+| `[4][?]` - 3rd term     | -150     |          |          |          |
+
+There are still some flaws with this, so create new `expressionnew[][]`
+
+```java
+int expressionnew[][] = new int [n][4]
+```
+
+`parent.indexOf(String)` is a helpful tool in java that returns a non (-1) answer if String is not found in the output of `parent`
 
 ### Expressions with brackets
 
@@ -156,3 +212,34 @@ Check next character, if it is a number, then something has gone wrong, if it is
 `(x-3)`
 
 Voila, you've successfully dissected the expression!
+
+## Outdated ideas
+
+### Post-harvest array edit
+
+//So, we check every single array value to see if it has $x$ in it that **IS NOT** its own term
+
+```java
+for (int i=0;i<=n;i++){ //using i<=n because if array starts from 0, then last term will be n
+  for (int j=0;j<=3;j++){ //3 is maximum width of array, as there is no term comprised of more than 4 elements
+    if (expression1[i][j]=="x"){
+      //since all independent instances of x will always be on [?][0], exclude independent x's
+      if (j != 0){
+        
+      }
+   	 }
+  	} 
+	}
+```
+
+
+
+| Array `expression1[][]`  | `[?][0]` | `[?][1]` | `[?][2]` | `[?][3]` |
+| ------------------------ | -------- | -------- | -------- | -------- |
+| `[0][?]` -1st term       | 25       | x        | ^        | 2        |
+| `[1][?]` - 1/2 separator | +        |          |          |          |
+| `[2][?]` - 2nd term      | 25       | x        |          |          |
+| `[3][?]` - 2/3 seperator | -        |          |          |          |
+| `[4][?]` - 3rd term      | 150      |          |          |          |
+
+### 
